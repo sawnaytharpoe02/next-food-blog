@@ -1,0 +1,120 @@
+// This is your Prisma schema file,
+// learn more about it in the docs: https://pris.ly/d/prisma-schema
+
+// Looking for ways to speed up your queries, or scale easily with your serverless or edge functions?
+// Try Prisma Accelerate: https://pris.ly/cli/accelerate-init
+
+generator client {
+  provider = "prisma-client-js"
+  output   = "../generated/prisma"
+}
+
+datasource db {
+  provider = "mongodb"
+  url      = env("DATABASE_URL")
+}
+
+enum Role {
+  ADMIN
+  USER
+}
+
+enum ReactionType {
+  LIKE
+  LOVE
+  CLAP
+}
+
+model User {
+  id        String   @id @default(auto()) @map("_id") @db.ObjectId
+  name      String
+  email     String   @unique
+  password  String
+  role      Role     @default(USER)
+  posts     Post[]
+  comments  Comment[]
+  reactions Reaction[]
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+}
+
+model Post {
+  id             String         @id @default(auto()) @map("_id") @db.ObjectId
+  title          String
+  slug           String         @unique
+  content        String
+  thumbnailUrl   String?
+  authorId       String         @db.ObjectId
+  author         User           @relation(fields: [authorId], references: [id])
+  published      Boolean        @default(false)
+  publishedAt    DateTime?
+  createdAt      DateTime       @default(now())
+  updatedAt      DateTime       @updatedAt
+
+  comments       Comment[]
+  reactions      Reaction[]
+
+  postCategories PostCategory[]
+  postTags       PostTag[]
+}
+
+model Category {
+  id             String         @id @default(auto()) @map("_id") @db.ObjectId
+  name           String         @unique
+  postCategories PostCategory[]
+}
+
+model Tag {
+  id       String   @id @default(auto()) @map("_id") @db.ObjectId
+  name     String   @unique
+  postTags PostTag[]
+}
+
+model PostCategory {
+  id         String   @id @default(auto()) @map("_id") @db.ObjectId
+  postId     String   @db.ObjectId
+  categoryId String   @db.ObjectId
+
+  post       Post     @relation(fields: [postId], references: [id])
+  category   Category @relation(fields: [categoryId], references: [id])
+
+  @@unique([postId, categoryId])
+}
+
+model PostTag {
+  id     String @id @default(auto()) @map("_id") @db.ObjectId
+  postId String @db.ObjectId
+  tagId  String @db.ObjectId
+
+  post   Post   @relation(fields: [postId], references: [id])
+  tag    Tag    @relation(fields: [tagId], references: [id])
+
+  @@unique([postId, tagId])
+}
+
+model Comment {
+  id        String    @id @default(auto()) @map("_id") @db.ObjectId
+  content   String
+  postId    String    @db.ObjectId
+  post      Post      @relation(fields: [postId], references: [id])
+  authorId  String    @db.ObjectId
+  author    User      @relation(fields: [authorId], references: [id])
+
+  parentId  String?   @db.ObjectId
+  parent    Comment?  @relation("CommentReplies", fields: [parentId], references: [id], onDelete: NoAction, onUpdate: NoAction)
+  replies   Comment[] @relation("CommentReplies")
+
+  createdAt DateTime  @default(now())
+}
+
+model Reaction {
+  id        String       @id @default(auto()) @map("_id") @db.ObjectId
+  type      ReactionType
+  postId    String       @db.ObjectId
+  post      Post         @relation(fields: [postId], references: [id])
+  userId    String       @db.ObjectId
+  user      User         @relation(fields: [userId], references: [id])
+  createdAt DateTime     @default(now())
+
+  @@unique([postId, userId])
+}
