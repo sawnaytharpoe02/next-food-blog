@@ -10,6 +10,7 @@
 }
 
 :root {
+  --nav-height: 45px;
   --background: oklch(1 0 0);
   --foreground: oklch(0.145 0 0);
   --card: oklch(1 0 0);

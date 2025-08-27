@@ -1,9 +1,9 @@
 import Image from "next/image";
 import Link from "next/link";
 import { Search } from "lucide-react";
-import { Button } from "@/components/ui/button";
-import RecipeCard from "@/components/recipe-card";
-import FeaturedRecipeCard from "@/components/featured-recipe-card";
+import { Button } from "@/components/ui/Button";
+import RecipeCard from "@/components/RecipeCard";
+import FeaturedRecipeCard from "@/components/FeaturedRecipeCard";
 
 export default function Home() {
   return (
