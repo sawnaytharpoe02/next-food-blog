@@ -5,6 +5,7 @@ import { motion } from "framer-motion";
 import Link from "next/link";
 import { LucideIcon } from "lucide-react";
 import { cn } from "@/lib/utils";
+import { Briefcase, FileText, Home, User } from "lucide-react";
 
 interface NavItem {
   name: string;
@@ -12,13 +13,15 @@ interface NavItem {
   icon: LucideIcon;
 }
 
-interface NavBarProps {
-  items: NavItem[];
-  className?: string;
-}
+const navItems = [
+  { name: "Post", url: "/dashboard", icon: Home },
+  { name: "Category", url: "/dashboard/category", icon: User },
+  { name: "Tag", url: "/dashboard/tag", icon: Briefcase },
+  { name: "Comment", url: "/dashboard/comment", icon: FileText },
+];
 
-const NavBar = ({ items, className }: NavBarProps) => {
-  const [activeTab, setActiveTab] = useState(items[0].name);
+const NavBar = () => {
+  const [activeTab, setActiveTab] = useState(navItems[0].name);
   const [isMobile, setIsMobile] = useState(false);
 
   useEffect(() => {
@@ -32,14 +35,9 @@ const NavBar = ({ items, className }: NavBarProps) => {
   }, []);
 
   return (
-    <div
-      className={cn(
-        "fixed bottom-0 left-1/2 z-50 mb-6 h-[var(--nav-height)] -translate-x-1/2 sm:top-6 sm:mb-0",
-        className,
-      )}
-    >
+    <div className="fixed bottom-0 left-1/2 z-50 mb-6 h-[var(--nav-height)] -translate-x-1/2 sm:top-6 sm:mb-0">
       <div className="bg-background/5 border-border flex items-center gap-3 rounded-full border px-1 py-1 shadow-lg backdrop-blur-lg">
-        {items.map((item) => {
+        {navItems.map((item) => {
           const Icon = item.icon;
           const isActive = activeTab === item.name;
 

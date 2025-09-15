@@ -1,8 +1,6 @@
-"use client";
-
-import { Card, CardBody, Chip, Button } from "@heroui/react";
 import Image from "next/image";
 import React from "react";
+import { Badge } from "@/components/ui/Badge";
 import FoodImage from "../../../public/assets/1.jpg";
 
 interface BlogCardProps {
@@ -14,8 +12,8 @@ interface BlogCardProps {
 }
 const BlogCard = ({ image, category, title, categoryColor }: BlogCardProps) => {
   return (
-    <Card className="min-h-[500px] rounded-3xl border-none bg-white p-2.5">
-      <CardBody className="p-0">
+    <div className="rounded-3xl border-none p-2.5">
+      <div className="p-0">
         <div className="h-[200px]">
           <div className="relative h-full w-auto overflow-hidden rounded-2xl">
             <Image
@@ -28,24 +26,23 @@ const BlogCard = ({ image, category, title, categoryColor }: BlogCardProps) => {
         </div>
         <div className="flex h-[300px] flex-col px-2">
           <div className="space-y-3">
-            <Chip
+            <Badge
               className={`${categoryColor} mt-4 rounded-full px-3 py-1 text-xs font-medium`}
             >
               {category}
-            </Chip>
-            <h3 className="text-xl leading-tight font-semibold text-balance text-gray-800">
+            </Badge>
+            <h3 className="text-lg leading-tight font-semibold text-balance text-gray-800">
               {title}
             </h3>
           </div>
 
-          <div className="mt-auto mb-4 ml-auto">
-            <Button className="h-12 w-12 rounded-full bg-red-500 hover:bg-gray-50">
-              Delete
-            </Button>
+          <div className="mt-auto mb-4 ml-auto flex gap-2">
+            <button>Edit</button>
+            <button>Delete</button>
           </div>
         </div>
-      </CardBody>
-    </Card>
+      </div>
+    </div>
   );
 };
 
