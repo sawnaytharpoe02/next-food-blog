@@ -37,8 +37,8 @@ const BlogCard = ({ image, category, title, categoryColor }: BlogCardProps) => {
           </div>
 
           <div className="mt-auto mb-4 ml-auto flex gap-2">
-            <button>Edit</button>
-            <button>Delete</button>
+            <button>Edit Blog</button>
+            <button>Delete Blog</button>
           </div>
         </div>
       </div>
