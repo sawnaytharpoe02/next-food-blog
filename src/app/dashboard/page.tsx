@@ -10,6 +10,7 @@ const DashboardPage = () => {
         {Array.from({ length: 6 }).map((_, idx) => (
           <BlogCard
             key={idx}
+            id={String(idx)}
             category="INCHEQ PRODUCT"
             title="How InCheq's Employee Engagement Survey Enhances Workplace Success"
             backgroundColor="bg-cyan-50"
